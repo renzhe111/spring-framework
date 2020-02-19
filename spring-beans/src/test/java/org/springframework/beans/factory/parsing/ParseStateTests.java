@@ -27,6 +27,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class ParseStateTests {
 
+	/**
+	 * 主要测试ParseState中链表的操作
+	 * @throws Exception
+	 */
+
 	@Test
 	public void testSimple() throws Exception {
 		MockEntry entry = new MockEntry();

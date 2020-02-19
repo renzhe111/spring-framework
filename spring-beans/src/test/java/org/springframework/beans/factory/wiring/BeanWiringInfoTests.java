@@ -29,6 +29,11 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 public class BeanWiringInfoTests {
 
+	/**
+	 * 检测BeanWiringInfo各个构造函数和方法
+	 * @throws Exception
+	 */
+
 	@Test
 	public void ctorWithNullBeanName() throws Exception {
 		assertThatIllegalArgumentException().isThrownBy(() ->

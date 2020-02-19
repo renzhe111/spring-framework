@@ -28,6 +28,9 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 public class ConstructorArgumentEntryTests {
 
+	/**
+	 * 测试构造函数参数位置索引不能为负数
+	 */
 	@Test
 	public void testCtorBailsOnNegativeCtorIndexArgument() {
 		assertThatIllegalArgumentException().isThrownBy(() ->

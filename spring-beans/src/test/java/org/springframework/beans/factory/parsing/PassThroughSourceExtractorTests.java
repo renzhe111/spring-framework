@@ -28,6 +28,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class PassThroughSourceExtractorTests {
 
+	/**
+	 * 原封不动返回第一个参数，不知道有啥用
+	 * @throws Exception
+	 */
+
 	@Test
 	public void testPassThroughContract() throws Exception {
 		Object source  = new Object();

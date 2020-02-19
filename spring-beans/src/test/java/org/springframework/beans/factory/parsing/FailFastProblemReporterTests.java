@@ -53,6 +53,7 @@ public class FailFastProblemReporterTests {
 		reporter.setLogger(log);
 		reporter.warning(problem);
 
+		//TODO 需要补充mockito相关的知识，才能理解这一句
 		verify(log).warn(any(), isA(IllegalArgumentException.class));
 	}
 

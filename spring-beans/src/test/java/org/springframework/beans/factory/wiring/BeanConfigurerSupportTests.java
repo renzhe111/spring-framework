@@ -52,6 +52,7 @@ public class BeanConfigurerSupportTests {
 		configurer.setBeanWiringInfoResolver(resolver);
 		configurer.setBeanFactory(new DefaultListableBeanFactory());
 		configurer.configureBean(beanInstance);
+		//校验resolveWiringInfo方法是否被调用过
 		verify(resolver).resolveWiringInfo(beanInstance);
 		assertThat(beanInstance.getName()).isNull();
 	}
@@ -76,6 +77,8 @@ public class BeanConfigurerSupportTests {
 		BeanConfigurerSupport configurer = new StubBeanConfigurerSupport();
 		configurer.setBeanFactory(factory);
 		configurer.afterPropertiesSet();
+		//这个方法很重要，传入一个存在的对象，然后把BeanDefinition中设置的属性值赋值给这个对象
+		//TODO 在哪里赋值给传入对象需要再研究，还没找到
 		configurer.configureBean(beanInstance);
 		assertThat(beanInstance.getName()).as("Bean is evidently not being configured (for some reason)").isEqualTo("Harriet Wheeler");
 	}
@@ -91,12 +94,15 @@ public class BeanConfigurerSupportTests {
 		factory.registerBeanDefinition("spouse", builder.getBeanDefinition());
 
 		BeanWiringInfoResolver resolver = mock(BeanWiringInfoResolver.class);
+		//设置调用resolver.resolveWiringInfo返回的值
+		//TODO 注意AUTOWIRE_BY_NAME，根据名称重写方法？
 		given(resolver.resolveWiringInfo(beanInstance)).willReturn(new BeanWiringInfo(BeanWiringInfo.AUTOWIRE_BY_NAME, false));
 
 		BeanConfigurerSupport configurer = new StubBeanConfigurerSupport();
 		configurer.setBeanFactory(factory);
 		configurer.setBeanWiringInfoResolver(resolver);
 		configurer.configureBean(beanInstance);
+		//TODO 不明白为什么是getSpouse的getName，而不是beanInstance.getName()，是为了测试方法重写？
 		assertThat(beanInstance.getSpouse().getName()).as("Bean is evidently not being configured (for some reason)").isEqualTo("David Gavurin");
 	}
 
@@ -111,6 +117,7 @@ public class BeanConfigurerSupportTests {
 		factory.registerBeanDefinition("Mmm, I fancy a salad!", builder.getBeanDefinition());
 
 		BeanWiringInfoResolver resolver = mock(BeanWiringInfoResolver.class);
+		//TODO 注意AUTOWIRE_BY_NAME，根据类型重写方法？
 		given(resolver.resolveWiringInfo(beanInstance)).willReturn(new BeanWiringInfo(BeanWiringInfo.AUTOWIRE_BY_TYPE, false));
 
 		BeanConfigurerSupport configurer = new StubBeanConfigurerSupport();

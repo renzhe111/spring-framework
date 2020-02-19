@@ -26,6 +26,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class NullSourceExtractorTests {
 
+	/**
+	 * 不知道干嘛用的，调用NullSourceExtractor的extractSource方法一直返回null
+	 * @throws Exception
+	 */
+
 	@Test
 	public void testPassThroughContract() throws Exception {
 		Object source  = new Object();

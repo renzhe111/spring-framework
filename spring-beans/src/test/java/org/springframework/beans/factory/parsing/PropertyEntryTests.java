@@ -28,6 +28,11 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 public class PropertyEntryTests {
 
+	/**
+	 * PropertyEntry判断构造函数参数如果为空则抛异常
+	 * @throws Exception
+	 */
+
 	@Test
 	public void testCtorBailsOnNullPropertyNameArgument() throws Exception {
 		assertThatIllegalArgumentException().isThrownBy(() ->

@@ -36,6 +36,9 @@ import static org.springframework.core.testfixture.io.ResourceTestUtils.qualifie
  */
 public class CustomProblemReporterTests {
 
+	/**
+	 * 核对问题报告
+	 */
 	private CollatingProblemReporter problemReporter;
 
 	private DefaultListableBeanFactory beanFactory;
@@ -55,7 +58,15 @@ public class CustomProblemReporterTests {
 	@Test
 	public void testErrorsAreCollated() {
 		this.reader.loadBeanDefinitions(qualifiedResource(CustomProblemReporterTests.class, "context.xml"));
+		/**
+		 * 之所以错误为4个，是因为map的entry元素需要key和value属性，配置文件中有两处entry都有此问题
+		 */
 		assertThat(this.problemReporter.getErrors().length).as("Incorrect number of errors collated").isEqualTo(4);
+
+		for(Problem problem : this.problemReporter.getErrors()){
+			System.out.println(problem);
+			System.out.println("=======================");
+		}
 
 		TestBean bean = (TestBean) this.beanFactory.getBean("validBean");
 		assertThat(bean).isNotNull();
