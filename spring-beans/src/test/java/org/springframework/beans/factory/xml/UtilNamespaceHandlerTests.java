@@ -41,6 +41,8 @@ import org.springframework.util.LinkedCaseInsensitiveMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * 测试Spring util命名空间的用法
+ * 在spring的配置文件中util命名空间类似于java.util包类对应，util命名空间提供了集合相关的配置，在使用命名空间前要导入util命名空间
  * @author Rob Harrop
  * @author Juergen Hoeller
  * @author Mark Fisher
@@ -275,6 +277,7 @@ public class UtilNamespaceHandlerTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("circularCollectionBeansBean");
 
 		List list = bean.getSomeList();
+		//TODO 为什么执行this.beanFactory.getBean("circularList");之后，就是代理类型了？不执行就不是？
 		assertThat(Proxy.isProxyClass(list.getClass())).isTrue();
 		assertThat(list.size()).isEqualTo(1);
 		assertThat(list.get(0)).isEqualTo(bean);
@@ -375,6 +378,7 @@ public class UtilNamespaceHandlerTests {
 	@Test
 	public void testLocalOverrideDefault() {
 		Properties props = (Properties) this.beanFactory.getBean("defaultLocalOverrideProperties");
+		//默认情况下，<prop key="foo">local</prop>不会替换掉util.properties中的配置
 		assertThat(props.get("foo")).as("Incorrect property value").isEqualTo("bar");
 		assertThat(props.get("foo2")).as("Incorrect property value").isEqualTo("local2");
 	}
@@ -382,12 +386,14 @@ public class UtilNamespaceHandlerTests {
 	@Test
 	public void testLocalOverrideFalse() {
 		Properties props = (Properties) this.beanFactory.getBean("falseLocalOverrideProperties");
+		//设置local-override="false"，<prop key="foo">local</prop>不会替换掉util.properties中的配置
 		assertThat(props.get("foo")).as("Incorrect property value").isEqualTo("bar");
 		assertThat(props.get("foo2")).as("Incorrect property value").isEqualTo("local2");
 	}
 
 	@Test
 	public void testLocalOverrideTrue() {
+		//设置local-override="true"，<prop key="foo">local</prop>会替换掉util.properties中的配置
 		Properties props = (Properties) this.beanFactory.getBean("trueLocalOverrideProperties");
 		assertThat(props.get("foo")).as("Incorrect property value").isEqualTo("local");
 		assertThat(props.get("foo2")).as("Incorrect property value").isEqualTo("local2");

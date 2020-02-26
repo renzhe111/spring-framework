@@ -80,6 +80,8 @@
 				<ref bean="david"/>
 				<value>literal</value>
 				<ref bean="jenny"/>
+				<!-- idref注入的是目标bean的id而不是目标bean的实例，同时使用idref容器在部署的时候还会验证这个名称的bean是否真实存在。
+其实idref就跟value一样，只是将某个字符串注入到属性或者构造函数中，只不过注入的是某个Bean定义的id属性值。 -->
 				<idref bean="rod"/>
 				<array>
 					<ref bean="david"/>

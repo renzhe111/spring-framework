@@ -46,6 +46,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
+ * 对集合的各种测试
  * Tests for collections in XML bean definitions.
  *
  * @author Juergen Hoeller
@@ -69,7 +70,13 @@ public class XmlBeanCollectionTests {
 	public void testCollectionFactoryDefaults() throws Exception {
 		ListFactoryBean listFactory = new ListFactoryBean();
 		listFactory.setSourceList(new LinkedList());
+		/**
+		 * afterPropertiesSet方法，初始化bean的时候执行，可以针对某个具体的bean进行配置。
+		 * afterPropertiesSet 必须实现 InitializingBean接口。
+		 * 实现 InitializingBean接口必须实现afterPropertiesSet方法。
+		 */
 		listFactory.afterPropertiesSet();
+		//getObject返回的类型由setTargetListClass决定的
 		boolean condition2 = listFactory.getObject() instanceof ArrayList;
 		assertThat(condition2).isTrue();
 
@@ -176,6 +183,7 @@ public class XmlBeanCollectionTests {
 
 	@Test
 	public void testInvalidBeanNameReference() throws Exception {
+		//rod2没定义所以会抛出异常
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
 				this.beanFactory.getBean("jumble2"))
 			.withCauseInstanceOf(BeanDefinitionStoreException.class)

@@ -35,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
+ * 测试xml配置文件验证模式
  * @author Rick Evans
  * @author Juergen Hoeller
  * @author Sam Brannen
@@ -49,8 +50,12 @@ public class XmlBeanDefinitionReaderTests {
 
 	@Test
 	public void withOpenInputStream() {
+
 		SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
 		Resource resource = new InputStreamResource(getClass().getResourceAsStream("test.xml"));
+		//new XmlBeanDefinitionReader(registry).loadBeanDefinitions(resource);
+		//这里抛的异常是：cannot determine validation mode automatically.
+		// 原因是InputStreamResource isOpen=true，在XmlBeanDefinitionReader中的detectValidationMode方法识别模式时直接抛异常
 		assertThatExceptionOfType(BeanDefinitionStoreException.class).isThrownBy(() ->
 				new XmlBeanDefinitionReader(registry).loadBeanDefinitions(resource));
 	}
@@ -76,6 +81,7 @@ public class XmlBeanDefinitionReaderTests {
 	@Test
 	public void withWildcardImport() {
 		SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
+		//TODO classpath*: 和 classpath: 有什么区别和关系？
 		Resource resource = new ClassPathResource("importPattern.xml", getClass());
 		new XmlBeanDefinitionReader(registry).loadBeanDefinitions(resource);
 		testBeanDefinitions(registry);
@@ -85,6 +91,8 @@ public class XmlBeanDefinitionReaderTests {
 	public void withInputSource() {
 		SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
 		InputSource resource = new InputSource(getClass().getResourceAsStream("test.xml"));
+		// new XmlBeanDefinitionReader(registry).loadBeanDefinitions(resource);
+		// 抛异常：cannot open InputStream.  应该是因为配置文件路径不对
 		assertThatExceptionOfType(BeanDefinitionStoreException.class).isThrownBy(() ->
 				new XmlBeanDefinitionReader(registry).loadBeanDefinitions(resource));
 	}
@@ -94,6 +102,7 @@ public class XmlBeanDefinitionReaderTests {
 		SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
 		InputSource resource = new InputSource(getClass().getResourceAsStream("test.xml"));
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(registry);
+		//设置了解析模式之后，就不会抛异常，因为不会执行到分析配置文件那一步。
 		reader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_DTD);
 		reader.loadBeanDefinitions(resource);
 		testBeanDefinitions(registry);

@@ -84,6 +84,8 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	/**
 	 * Create a new {@code DefaultNamespaceHandlerResolver} using the
 	 * default mapping file location.
+	 * 用默认映射文件位置创建一个新的DefaultNamespaceHandlerResolver
+	 *
 	 * @param classLoader the {@link ClassLoader} instance used to load mapping resources
 	 * (may be {@code null}, in which case the thread context ClassLoader will be used)
 	 * @see #DEFAULT_HANDLER_MAPPINGS_LOCATION
@@ -151,6 +153,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	 * Load the specified NamespaceHandler mappings lazily.
 	 */
 	private Map<String, Object> getHandlerMappings() {
+		//TODO 为什么handlerMappings会被初始化？在哪里初始化的？
 		Map<String, Object> handlerMappings = this.handlerMappings;
 		if (handlerMappings == null) {
 			synchronized (this) {

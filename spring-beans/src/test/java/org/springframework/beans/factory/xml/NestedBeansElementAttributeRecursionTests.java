@@ -83,6 +83,7 @@ public class NestedBeansElementAttributeRecursionTests {
 	public void defaultMergeWithNonValidatingParser() {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(bf);
+		// TODO setValidating=false的作用是什么？
 		xmlBeanDefinitionReader.setValidating(false);
 		xmlBeanDefinitionReader.loadBeanDefinitions(
 				new ClassPathResource("NestedBeansElementAttributeRecursionTests-merge-context.xml", this.getClass()));
@@ -109,6 +110,14 @@ public class NestedBeansElementAttributeRecursionTests {
 				"charlie", "delta", "echo", "foxtrot", "golf", "hotel");
 	}
 
+
+	/**
+	 * https://blog.csdn.net/likun557/article/details/104438417
+	 * 上面这篇文章对autowire-candidates和default-autowire-candidates属性讲的很详细
+	 * 1、autowire-candidates这个属性的作用就是当根据类型获取bean实例时，如果对应类型有多个实例，到底是获取哪个实例呢？
+	 *    设置autowire-candidates=true时，表示这个bean为候选者，为false，表示不是候选者，这个属性有三个值：default/true/false
+	 * 2、default-autowire-candidates的值是个通配符，用于定义哪些bean可以作为候选者，一般用在beans标签上
+	 */
 	@Test
 	public void defaultAutowireCandidates() {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();

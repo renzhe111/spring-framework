@@ -5,6 +5,7 @@
 
 	<bean id="default" class="org.springframework.beans.testfixture.beans.FactoryMethods"
 			factory-method="defaultInstance">
+		<!-- 静态方法注入方式 -->
 		<!-- No constructor-arg elements -->
 		<property name="stringValue"><value>setterString</value></property>
 	</bean>
@@ -64,6 +65,7 @@
 
 	<bean id="fullWithAutowire" class="org.springframework.beans.testfixture.beans.FactoryMethods"
 			factory-method="newInstance" autowire="constructor">
+		<!-- autowire：自动装配 -->
 		<constructor-arg index="0" ref="juergen"/>
 		<constructor-arg index="1" value="27"/>
 	</bean>

@@ -58,6 +58,8 @@ public abstract class AbstractListableBeanFactoryTests extends AbstractBeanFacto
 		assertThat(defNames.length == count).as("We should have " + count + " beans for class org.springframework.beans.testfixture.beans.TestBean, not " +
 				defNames.length).isTrue();
 
+		//allowEagerInit  如果为false，bean的引用不初始化，如果为true，则会初始化
+
 		int countIncludingFactoryBeans = count + 2;
 		String[] names = getListableBeanFactory().getBeanNamesForType(TestBean.class, true, true);
 		assertThat(names.length == countIncludingFactoryBeans).as("We should have " + countIncludingFactoryBeans +

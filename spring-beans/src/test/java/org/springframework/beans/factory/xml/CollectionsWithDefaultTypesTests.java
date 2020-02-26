@@ -28,6 +28,7 @@ import org.springframework.core.io.ClassPathResource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * 测试属性默认值和类型
  * @author Rob Harrop
  * @author Juergen Hoeller
  */

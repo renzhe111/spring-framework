@@ -27,6 +27,7 @@ import org.springframework.core.io.ClassPathResource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * 测试meta标签
  * @author Rob Harrop
  */
 public class MetadataAttachmentTests {

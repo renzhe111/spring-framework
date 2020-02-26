@@ -45,6 +45,9 @@ public class NestedBeansElementTests {
 		assertThat(foo).isInstanceOf(String.class);
 	}
 
+	/**
+	 * 测试beans标签的profile属性，这个属性的值和ConfigurableEnvironment对象ActiveProfiles的值对应才能获取到bean
+	 */
 	@Test
 	public void getBean_withActiveProfile() {
 		ConfigurableEnvironment env = new StandardEnvironment();

@@ -280,6 +280,12 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 
 	/**
+	 * 从给定的bean定义（可能是子bean）重写此bean定义中的设置（可能是从父子继承关系复制的父bean）。
+	 * 如果在给定的bean定义中指定，则将重写beanClass。
+	 * 将始终从给定的bean定义中获取abstract、scope、lazyInit、autowireMode、dependencyCheck和dependsOn。
+	 * 将把给定bean定义中的constructorArgumentValues、propertyValues和methodOverrides添加到现有bean定义中。
+	 * 如果在给定的bean定义中指定，则将重写factoryBeanName、factoryMethodName、initMethodName和destroyMethodName。
+	 *
 	 * Override settings in this bean definition (presumably a copied parent
 	 * from a parent-child inheritance relationship) from the given bean
 	 * definition (presumably the child).

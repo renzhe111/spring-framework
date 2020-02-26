@@ -28,6 +28,12 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 public class ClassNameBeanWiringInfoResolverTests {
 
+	/**
+	 * 测试ClassNameBeanWiringInfoResolver
+	 * @throws Exception
+	 */
+
+
 	@Test
 	public void resolveWiringInfoWithNullBeanInstance() throws Exception {
 		assertThatIllegalArgumentException().isThrownBy(() ->
@@ -40,6 +46,7 @@ public class ClassNameBeanWiringInfoResolverTests {
 		Long beanInstance = new Long(1);
 		BeanWiringInfo info = resolver.resolveWiringInfo(beanInstance);
 		assertThat(info).isNotNull();
+		//TODO 用beanInstance.getClass().getName()就可以得到类名，为什么还需要：ClassUtils.getUserClass(beanInstance).getName() ？
 		assertThat(info.getBeanName()).as("Not resolving bean name to the class name of the supplied bean instance as per class contract.").isEqualTo(beanInstance.getClass().getName());
 	}
 

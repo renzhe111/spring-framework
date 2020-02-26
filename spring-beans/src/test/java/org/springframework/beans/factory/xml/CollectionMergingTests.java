@@ -33,6 +33,7 @@ import org.springframework.core.io.ClassPathResource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * bean的属性、构造参数合并功能测试
  * Unit and integration tests for the collection merging support.
  *
  * @author Rob Harrop
@@ -52,6 +53,10 @@ public class CollectionMergingTests {
 
 	@Test
 	public void mergeList() throws Exception {
+		//找到合并属性的源码位置  AbstractBeanFactory 中 getMergedLocalBeanDefinition 方法 AbstractBeanDefinition 中 overrideFrom 方法
+		/**
+		 * TODO 如果<list merge="true">标签中，去掉merge="true"，就不会合并parent中的属性值，那么这个属性在哪里解析和判断的？
+		 */
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithList");
 		List list = bean.getSomeList();
 		assertThat(list.size()).as("Incorrect size").isEqualTo(3);

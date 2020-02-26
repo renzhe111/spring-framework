@@ -42,6 +42,10 @@ public class BeanNameGenerationTests {
 		reader.loadBeanDefinitions(new ClassPathResource("beanNameGeneration.xml", getClass()));
 	}
 
+	/**
+	 * 测试如果bean配置文件中没有指定名称，系统自动生成名称，生成规则为：类名#序号
+	 * 属性对象没指定名称，则自动名称规则为：类名#hashCode
+	 */
 	@Test
 	public void naming() {
 		String className = GeneratedNameBean.class.getName();

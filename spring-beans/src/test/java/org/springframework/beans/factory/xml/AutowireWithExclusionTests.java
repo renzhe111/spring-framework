@@ -28,6 +28,7 @@ import org.springframework.core.io.ClassPathResource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * TODO 没看完，有点难度，后面继续
  * @author Rob Harrop
  * @author Juergen Hoeller
  */
@@ -40,6 +41,7 @@ public class AutowireWithExclusionTests {
 		beanFactory.preInstantiateSingletons();
 		TestBean rob = (TestBean) beanFactory.getBean("rob");
 		TestBean sally = (TestBean) beanFactory.getBean("sally");
+		//TODO 不明白getSpouse返回的值（类型为：ITestBean）为什么就是这个单例对象？
 		assertThat(rob.getSpouse()).isEqualTo(sally);
 		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo(1);
 	}
@@ -50,6 +52,7 @@ public class AutowireWithExclusionTests {
 		DefaultListableBeanFactory beanFactory = getBeanFactory("autowire-with-exclusion.xml");
 		beanFactory.preInstantiateSingletons();
 		TestBean rob = (TestBean) beanFactory.getBean("rob");
+		//TODO rob bean配置里面并没有属性值，为什么解析出来会有属性值？
 		assertThat(rob.getSomeProperties().getProperty("name")).isEqualTo("props1");
 		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo(1);
 	}

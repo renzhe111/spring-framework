@@ -228,6 +228,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+	 * 返回指定bean的实例，该实例可以是共享的，也可以是独立的。
+	 * 参数： name–要检索的bean的名称
+	 * requiredType–要检索的bean的必需类型
+	 * args–使用显式参数创建bean实例时要使用的参数（仅在创建新实例时应用，而不是检索现有实例）
+	 * typeCheckOnly–是否为类型检查而不是实际使用而获取实例
+	 * 返回： 豆子的一个实例 投掷： beanException–如果无法创建bean
 	 * Return an instance, which may be shared or independent, of the specified bean.
 	 * @param name the name of the bean to retrieve
 	 * @param requiredType the required type of the bean to retrieve
@@ -1262,6 +1268,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 
 	/**
+	 * 返回合并的RootBeanDefinition，如果指定的bean对应于子bean定义，则遍历父bean定义。
+	 * 参数： bean name–要检索其合并定义的bean的名称
+	 * 返回： 给定bean的（可能合并的）RootBeanDefinition
+	 * 投掷： NoSuchBeanDefinitionException–如果没有具有给定名称的bean
+	 * BeanDefinitionStoreException–如果bean定义无效 BeansException公司
+	 *
 	 * Return a merged RootBeanDefinition, traversing the parent bean definition
 	 * if the specified bean corresponds to a child bean definition.
 	 * @param beanName the name of the bean to retrieve the merged definition for
@@ -1279,6 +1291,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+	 * 如果给定bean的定义是子bean定义，则通过与父bean合并返回给定顶级bean的RootBeanDefinition。
+	 * 参数： bean name–bean定义的名称 bd–原始bean定义（根/子bean定义）
+	 * 返回： 给定bean的（可能合并的）RootBeanDefinition
+	 * 投掷： BeanDefinitionStoreException–如果bean定义无效
+	 *
 	 * Return a RootBeanDefinition for the given top-level bean, by merging with
 	 * the parent if the given bean's definition is a child bean definition.
 	 * @param beanName the name of the bean definition
@@ -1293,6 +1310,13 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+	 * 如果给定bean的定义是子bean定义，则通过与父bean合并返回给定bean的RootBeanDefinition。
+	 * 参数： bean name–bean定义的名称
+	 * bd–原始bean定义（根/子bean定义）
+	 * containingBd–如果是内部bean，则为containingbean定义；如果是顶级bean，则为null
+	 * 返回： 给定bean的（可能合并的）RootBeanDefinition
+	 * 投掷： BeanDefinitionStoreException–如果bean定义无效
+	 *
 	 * Return a RootBeanDefinition for the given bean, by merging with the
 	 * parent if the given bean's definition is a child bean definition.
 	 * @param beanName the name of the bean definition
@@ -1311,6 +1335,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			RootBeanDefinition previous = null;
 
 			// Check with full lock now in order to enforce the same merged instance.
+			// 立即使用完全锁定进行检查，以强制实施相同的合并实例。
 			if (containingBd == null) {
 				mbd = this.mergedBeanDefinitions.get(beanName);
 			}

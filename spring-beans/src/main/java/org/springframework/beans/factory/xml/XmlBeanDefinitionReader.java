@@ -52,6 +52,13 @@ import org.springframework.util.xml.SimpleSaxErrorHandler;
 import org.springframework.util.xml.XmlValidationModeDetector;
 
 /**
+ *
+ * 用于XML Bean定义的Bean定义读取器。将实际的XML文档读取委托给BeanDefinitionDocumentReader接口的实现。
+ * 通常应用于org.springframework.beans.factory.support.DefaultListableBeanFactory
+ * 或org.springframework.context.support.GenericApplicationContext。
+ * 这个类加载一个DOM文档并将BeanDefinitionDocumentReader应用于它。
+ * 文档读取器将使用给定的bean工厂注册每个bean定义，并与后者的BeanDefinitionRegistry接口实现对话。
+ *
  * Bean definition reader for XML bean definitions.
  * Delegates the actual XML document reading to an implementation
  * of the {@link BeanDefinitionDocumentReader} interface.
@@ -127,6 +134,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	private final XmlValidationModeDetector validationModeDetector = new XmlValidationModeDetector();
 
+	/**
+	 * 当使用ThreadLocal维护变量时，ThreadLocal为每个使用该变量的线程提供独立的变量副本，
+	 * 所以每一个线程都可以独立地改变自己的副本，而不会影响其它线程所对应的副本。
+	 */
 	private final ThreadLocal<Set<EncodedResource>> resourcesCurrentlyBeingLoaded =
 			new NamedThreadLocal<>("XML bean definition resources currently being loaded");
 
@@ -260,6 +271,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	protected EntityResolver getEntityResolver() {
 		if (this.entityResolver == null) {
 			// Determine default EntityResolver to use.
+			//resourceLoader在初始化XmlBeanDefinitionReader时已经创建
 			ResourceLoader resourceLoader = getResourceLoader();
 			if (resourceLoader != null) {
 				this.entityResolver = new ResourceEntityResolver(resourceLoader);
@@ -307,6 +319,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Load bean definitions from the specified XML file.
+	 * 从指定的xml文件加载bean定义
+	 *
 	 * @param encodedResource the resource descriptor for the XML file,
 	 * allowing to specify an encoding to use for parsing the file
 	 * @return the number of bean definitions found
@@ -323,6 +337,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 			currentResources = new HashSet<>(4);
 			this.resourcesCurrentlyBeingLoaded.set(currentResources);
 		}
+		/**
+		 * 如果资源已经在currentResources这个Set中存在，则抛出异常，表示一个文件不能被重复加载
+		 */
 		if (!currentResources.add(encodedResource)) {
 			throw new BeanDefinitionStoreException(
 					"Detected cyclic loading of " + encodedResource + " - check your import definitions!");
@@ -345,6 +362,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 					"IOException parsing XML document from " + encodedResource.getResource(), ex);
 		}
 		finally {
+			//加载好xml之后清空缓存
 			currentResources.remove(encodedResource);
 			if (currentResources.isEmpty()) {
 				this.resourcesCurrentlyBeingLoaded.remove();
@@ -385,6 +403,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * @throws BeanDefinitionStoreException in case of loading or parsing errors
 	 * @see #doLoadDocument
 	 * @see #registerBeanDefinitions
+	 * 实际从指定的XML文件加载bean定义。
+	 * 参数： inputSource–要从中读取的SAX inputSource resource–XML文件的资源描述符
+	 * 返回： 找到的bean定义数 投掷： BeanDefinitionStoreException–在加载或分析错误时
+	 * 另见： doLoadDocument，注册表行定义
 	 */
 	protected int doLoadBeanDefinitions(InputSource inputSource, Resource resource)
 			throws BeanDefinitionStoreException {
@@ -424,6 +446,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Actually load the specified document using the configured DocumentLoader.
+	 * 实际使用配置的DocumentLoader加载指定的文档。
 	 * @param inputSource the SAX InputSource to read from
 	 * @param resource the resource descriptor for the XML file
 	 * @return the DOM Document
@@ -443,6 +466,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * <p>Override this method if you would like full control over the validation
 	 * mode, even when something other than {@link #VALIDATION_AUTO} was set.
 	 * @see #detectValidationMode
+	 *
+	 * 确定指定资源的验证模式。
+	 * 如果未配置显式验证模式，则从给定资源检测验证模式。
+	 * 如果希望完全控制验证模式，请重写此方法，即使设置了validation_AUTO以外的其他设置。
+	 * 另见： 检测校准模式
 	 */
 	protected int getValidationModeForResource(Resource resource) {
 		int validationModeToUse = getValidationMode();
@@ -460,6 +488,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	}
 
 	/**
+	 * 检测要对由提供的资源标识的XML文件执行哪种验证。
+	 * 如果文件具有DOCTYPE定义，则使用DTD验证，否则假定使用XSD验证。
+	 * 如果要自定义验证自动模式的分辨率，请重写此方法。
 	 * Detect which kind of validation to perform on the XML file identified
 	 * by the supplied {@link Resource}. If the file has a {@code DOCTYPE}
 	 * definition then DTD validation is used otherwise XSD validation is assumed.
@@ -496,6 +527,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	}
 
 	/**
+	 * 注册给定DOM文档中包含的bean定义。由loadBeanDefinitions调用。
+	 * 创建解析器类的新实例，并对其调用registerBeanDefinitions。
+	 * 参数： doc–DOM文档 资源-资源描述符（用于上下文信息）
+	 * 返回： 找到的bean定义数 投掷： BeanDefinitionStoreException–在分析错误时
+	 * 另见： loadBeanDefinitions、setDocumentReaderClass、BeanDefinitionDocumentReader.registerBeanDefinitions
+	 *
 	 * Register the bean definitions contained in the given DOM document.
 	 * Called by {@code loadBeanDefinitions}.
 	 * <p>Creates a new instance of the parser class and invokes

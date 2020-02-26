@@ -3,6 +3,8 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<!-- c命名空间没有引入 -->
+
 	<bean id="error" class="org.springframework.beans.testfixture.beans.TestBean" c:name="error-bean">
 		<constructor-arg name="name" value="error-bean"/>
 	</bean>

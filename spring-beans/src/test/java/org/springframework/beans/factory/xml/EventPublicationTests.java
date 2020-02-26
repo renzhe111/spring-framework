@@ -36,6 +36,7 @@ import org.springframework.core.io.ClassPathResource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * 测试解析xml配置文件中的默认标签
  * @author Rob Harrop
  * @author Juergen Hoeller
  */
@@ -58,6 +59,9 @@ public class EventPublicationTests {
 
 	@Test
 	public void defaultsEventReceived() throws Exception {
+		// DefaultBeanDefinitionDocumentReader 中 parseDefaultElement 调用 doRegisterBeanDefinitions
+		// 即对beans的解析
+		// BeanDefinitionParserDelegate 中 populateDefaults 方法做了DocumentDefaultsDefinition实例的默认值初始化
 		List defaultsList = this.eventListener.getDefaults();
 		boolean condition2 = !defaultsList.isEmpty();
 		assertThat(condition2).isTrue();

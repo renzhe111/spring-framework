@@ -106,12 +106,15 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 
 	@Test
 	public void beanCount() {
+		// 为什么是13，明明定义了12个bean？ 因为roderick继承了rod，所以它的类型也是TestBean
 		assertTestBeanCount(13);
 	}
 
 	@Test
 	public void lifecycleMethods() {
 		LifecycleBean bean = (LifecycleBean) getBeanFactory().getBean("lifecycle");
+		// 不抛异常，说明afterPropertiesSet、declaredInitMethod、postProcessAfterInit 都已经执行，
+		// 并且initMethodDeclared已经设置为true
 		bean.businessMethod();
 	}
 
@@ -183,6 +186,7 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 		TestBean tb4 = (TestBean) getBeanFactory().getBean(TestBean.class.getName() + "#0");
 		assertThat(tb4.getName()).isEqualTo(null);
 
+		//不包括非单例bean
 		Map drs = getListableBeanFactory().getBeansOfType(DummyReferencer.class, false, false);
 		assertThat(drs.size()).isEqualTo(5);
 		assertThat(drs.containsKey(DummyReferencer.class.getName() + "#0")).isTrue();
@@ -231,6 +235,8 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 
 	@Test
 	public void beanPostProcessor() {
+		// &符号在这里起了什么作用？
+		// &符号表示对bean工厂的直接引用，如果不加&，会通过bean工厂生成对应的bean实例
 		TestBean kerry = (TestBean) getBeanFactory().getBean("kerry");
 		TestBean kathy = (TestBean) getBeanFactory().getBean("kathy");
 		DummyFactory factory = (DummyFactory) getBeanFactory().getBean("&singletonFactory");

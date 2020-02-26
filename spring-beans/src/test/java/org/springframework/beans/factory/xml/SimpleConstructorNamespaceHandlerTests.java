@@ -28,10 +28,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
+ * 主要测试c命名空间的用法
+ * c命名空间对应于constructor-arg，即可以将constructor-arg元素替换为bean的一个以c命名空间前缀开始的属性。
+ * 使用c命名空间之前需要通过xmlns:c=”http://www.springframework.org/schema/c”进行声明。
  * @author Costin Leau
  */
 public class SimpleConstructorNamespaceHandlerTests {
 
+	/**
+	 * c-命名空间  作为构造器注入的替代方案
+	 *
+	 */
 	@Test
 	public void simpleValue() throws Exception {
 		DefaultListableBeanFactory beanFactory = createFactory("simpleConstructorNamespaceHandlerTests.xml");
@@ -41,6 +48,10 @@ public class SimpleConstructorNamespaceHandlerTests {
 		assertThat(nameValue.getValue()).isEqualTo("simple");
 	}
 
+	/**
+	 * 带ref表示装配bean的引入
+	 * @throws Exception
+	 */
 	@Test
 	public void simpleRef() throws Exception {
 		DefaultListableBeanFactory beanFactory = createFactory("simpleConstructorNamespaceHandlerTests.xml");

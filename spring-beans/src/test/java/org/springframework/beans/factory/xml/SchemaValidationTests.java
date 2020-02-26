@@ -28,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
+ * 测试xml配置文件，如果有问题标签则抛出异常
  * @author Rob Harrop
  */
 public class SchemaValidationTests {

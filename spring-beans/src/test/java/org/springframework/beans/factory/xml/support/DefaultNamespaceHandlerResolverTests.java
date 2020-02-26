@@ -28,6 +28,8 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 /**
  * Unit and integration tests for the {@link DefaultNamespaceHandlerResolver} class.
  *
+ * 主要是测试DefaultNamespaceHandlerResolver的构造函数
+ *
  * @author Rob Harrop
  * @author Rick Evans
  */
@@ -35,6 +37,7 @@ public class DefaultNamespaceHandlerResolverTests {
 
 	@Test
 	public void testResolvedMappedHandler() {
+		//创建DefaultNamespaceHandlerResolver实例，用了默认映射文件META-INF/spring.handlers
 		DefaultNamespaceHandlerResolver resolver = new DefaultNamespaceHandlerResolver(getClass().getClassLoader());
 		NamespaceHandler handler = resolver.resolve("http://www.springframework.org/schema/util");
 		assertThat(handler).as("Handler should not be null.").isNotNull();

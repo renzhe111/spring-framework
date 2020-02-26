@@ -33,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
+ * 测试工厂方法，非常重要，非常详细，一定要多看几次，很棒的测试用例
  * @author Juergen Hoeller
  * @author Chris Beams
  */
@@ -87,6 +88,7 @@ public class FactoryMethodTests {
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(xbf);
 		reader.loadBeanDefinitions(new ClassPathResource("factory-methods.xml", getClass()));
 
+		//Bean如果为null，最终返回的是NullBean，所以这里toString不会报空指针异常
 		assertThat(xbf.getBean("null").toString()).isEqualTo("null");
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
 				xbf.getBean("nullWithProperty"));
@@ -122,6 +124,7 @@ public class FactoryMethodTests {
 
 		FactoryMethods fm = (FactoryMethods) xbf.getBean("fullWithAutowire");
 		assertThat(fm.getNum()).isEqualTo(27);
+		// 为什么这里name变成了gotchaAutowired？原因是bean标签的autowire="constructor"属性决定的
 		assertThat(fm.getName()).isEqualTo("gotchaAutowired");
 		assertThat(fm.getTestBean().getName()).isEqualTo("Juergen");
 	}
@@ -311,6 +314,7 @@ public class FactoryMethodTests {
 		assertThat(fm1.getTestBean()).isSameAs(tb);
 		FactoryMethods fm2 = (FactoryMethods) xbf.getBean("testBeanOnly", new TestBean());
 		assertThat(fm2).isSameAs(fm1);
+		//TODO 为什么这两个TestBean会一样？
 		assertThat(fm2.getTestBean()).isSameAs(tb);
 	}
 

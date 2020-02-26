@@ -25,6 +25,7 @@ import org.springframework.core.io.ClassPathResource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * 测试初始化和销毁方法的配置
  * @author Rob Harrop
  * @author Juergen Hoeller
  */

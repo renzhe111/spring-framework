@@ -23,6 +23,8 @@ import org.xml.sax.InputSource;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
+ *
+ * 测试 DelegatingEntityResolver 构造参数不能为空
  * Unit tests for the {@link DelegatingEntityResolver} class.
  *
  * @author Rick Evans

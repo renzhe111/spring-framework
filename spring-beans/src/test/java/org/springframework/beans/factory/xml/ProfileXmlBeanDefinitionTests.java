@@ -29,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
+ * 主要测试beans标签的profile属性配置
  * Tests various combinations of profile declarations against various profile
  * activation and profile default scenarios.
  *
@@ -139,6 +140,9 @@ public class ProfileXmlBeanDefinitionTests {
 		}
 	}
 
+	/**
+	 * TODO setActiveProfiles和setDefaultProfiles有什么关系？
+	 */
 	@Test
 	public void testDefaultAndNonDefaultProfile() {
 		assertThat(beanFactoryFor(DEFAULT_ELIGIBLE_XML, NONE_ACTIVE)).is(containingTarget());

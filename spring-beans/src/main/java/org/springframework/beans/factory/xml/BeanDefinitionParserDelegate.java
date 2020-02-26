@@ -68,6 +68,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 
 /**
+ * 用于分析XML bean定义的有状态委托类。
+ * 用于主解析器和任何扩展BeanDefinitionParser或BeanDefinitionDecorators。
+ * 自： 2.0条
+ * 另见： ParserContext，默认值为definitiondocumentreader
+ * Delegate：代表
+ *
  * Stateful delegate class used to parse XML bean definitions.
  * Intended for use by both the main parser and any extension
  * {@link BeanDefinitionParser BeanDefinitionParsers} or

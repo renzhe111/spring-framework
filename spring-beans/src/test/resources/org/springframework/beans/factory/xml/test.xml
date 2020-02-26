@@ -85,6 +85,7 @@
 	</bean>
 
 	<!-- Factory beans are automatically treated differently -->
+	<!-- 工厂bean被自动区别对待 -->
 	<bean id="singletonFactory"	class="org.springframework.beans.testfixture.beans.factory.DummyFactory">
 	</bean>
 

@@ -28,6 +28,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
+ * spring2.5以后，为了简化setter方法属性注入，引用p名称空间的概念，可以将<property> 子元素，简化为<bean>元素属性配置
+ * 使用p命名空间之前需要通过xmlns:c=”http://www.springframework.org/schema/p”进行声明。
+ * 此测试用例就是用来测试p名称空间的
  * @author Rob Harrop
  * @author Juergen Hoeller
  * @author Arjen Poutsma
@@ -58,6 +61,10 @@ public class SimplePropertyNamespaceHandlerTests {
 		assertThat(sally).isEqualTo(rob.getSpouse());
 	}
 
+	/**
+	 * 属性定义了两次，抛异常
+	 * @throws Exception
+	 */
 	@Test
 	public void withPropertyDefinedTwice() throws Exception {
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
@@ -72,6 +79,9 @@ public class SimplePropertyNamespaceHandlerTests {
 		new XmlBeanDefinitionReader(beanFactory).loadBeanDefinitions(
 				new ClassPathResource("simplePropertyNamespaceHandlerTests.xml", getClass()));
 		ITestBean sally = (TestBean) beanFactory.getBean("derivedSally");
+		/**
+		 * TODO 不明白为什么sally.getSpouse().getName()).isEqualTo("r")，p:spouseRef="r"是什么意思？
+		 */
 		assertThat(sally.getSpouse().getName()).isEqualTo("r");
 	}
 
